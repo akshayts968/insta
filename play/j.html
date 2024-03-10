@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embed Instagram Reel</title>
+</head>
+<body>
+<div id="reelEmbed"></div>
+
+<script>
+// Function to fetch and embed Instagram Reel
+
+async function embedInstagramReel() {
+    const reelUrl = 'https://www.instagram.com/reel/C4LFFbZJbUd/?utm_source=ig_embed&amp;utm_campaign=loading'; // Replace REEL_ID with the actual Reel ID
+
+    try {
+        // Fetch embed HTML from Instagram oEmbed API
+        const response = await fetch(`https://api.instagram.com/oembed?url=${encodeURIComponent(reelUrl)}`);
+        const data = await response.json();
+
+        // Display embedded Reel
+        document.getElementById('reelEmbed').innerHTML = data.html;
+    } catch (error) {
+        console.error('Error fetching Instagram Reel:', error);
+        document.getElementById('reelEmbed').innerText = 'Error fetching Instagram Reel.';
+    }
+}
+
+// Call the function to embed the Reel when the page loads
+window.onload = embedInstagramReel;
+</script>
+</body>
+</html>

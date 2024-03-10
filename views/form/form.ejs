@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information Form</title>
+</head>
+<body>
+    <h2>User Information Form</h2>
+    <form action="/form" method="POST">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        
+        <label for="field">Field:</label><br>
+        <select id="field" name="field" required>
+            <option value="">Select Field</option>
+            <option value="IT">Information Technology</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Science">Science</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

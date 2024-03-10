@@ -1,0 +1,61 @@
+
+    <div class="mains">
+                <div class="main-content">
+            <!--<%if(success && success.length){%>
+                <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
+                <%=success%>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <%}%>
+            <%if(error && error.length){%>
+                <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
+                <%=error%>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <%}%>-->
+            <header>
+                <div class="main-img">
+                  <img src="<%= user.profile %>" alt="">
+                </div>
+                <div class="main-img-details">
+                    <div class="r-1"><a class="r-1-a" href=""><h2><%= user.username %></h2><img class="r-1-img" src="data:image/jpeg;base64,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" alt=""></a>
+                        <div class="r-1-1">
+                            <% if (currUser && currUser._id.equals(user._id)){ %>
+                                <span><a href="/user/<%= user._id %>/change"><button class="r-1-1-b1">Change</button></a></span>
+                                <span><a href="/user/<%= user._id %>/newpost"><button class="r-1-1-b2">NewPost</button></a></span>
+                            <% } else { %>
+                                <% if (!exists) { %>
+                                <form action="/user/<%= user._id %>" method="post"><span><button class="r-1-1-b1">Follow</button></span></form>
+                                <%}else { %>
+                                    <form action="/user/<%= user._id %>?_method=DELETE" method="post"><span><button class="r-1-1-b1" style="color: aliceblue;background-color: black; object-fit: cover;">Following</button></span></form>
+                                <% } %>
+                                <span><button class="r-1-1-b2">Message</button></span>
+                            <% } %>
+                            <span><button class="r-1-1-b3"><i class="fa-solid fa-user-plus"></i></button></span>
+                        </div>
+                        <span><i class="fa-solid fa-ellipsis _3dot"></i></span>
+
+                    </div>
+                    <div style="width:613.339px; height: 0; margin-bottom: 20px;"></div>
+                    <ul class="r-2">
+                        <li><span><%= user.nPost %></span> Posts</li>
+                        <a href="/user/<%=user._id%>/followers"><li><span><%= user.nFollowers %></span> Followers</li></a>
+                        <li><span> <%= user.nFollowing %></span> Following</li>
+                    </ul>
+                    <span style="color: white; font-size: 14px;font-weight: 600;letter-spacing: 10px;"><%= user.name %></span>
+                </div>
+            </header>
+            <footer>
+            <h1>POST</h1>
+            <div class="posts">
+                <div class="post-hide">
+                <% for(post of user.post){%>
+                <div class="post"><img class="post-img" src="<%=post.videourl%>" alt="">
+                    <% if (currUser && currUser._id.equals(user._id)){ %>
+                    <form method="post" action="/user/<%=user._id%>/delete/<%=post._id%>?_method=DELETE"><button>delete</button></form>
+                    <%}%>
+                </div><br>
+                <%}%>
+            </div></div></footer>
+        </div>
+    </div>

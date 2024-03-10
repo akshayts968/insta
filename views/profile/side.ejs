@@ -1,0 +1,94 @@
+
+    <div class="centre-display">
+        <div class="centre-display-div">
+            <div class="video-side">
+                <video class="video-side-v" autoplay loop src="" onclick="playPause(this)"></video>
+            </div>
+            <div class="comment-side"></div>
+        </div>
+        <button class="closeButton" onclick="centreVideo(this)"><i class="fa-solid fa-xmark "></i></button>
+    </div>
+    <div class="nav-bar-div side-nav">
+        <div>
+        <div class="nav-1"><img src="https://thumbs.dreamstime.com/b/print-204012277.jpg" alt="" srcset="" class="instaImg"><i class="fa-brands fa-square-instagram navIcon" style="color: #2b00ff;"></i></div>
+        <div class="nav-2">
+            <div class="nav-2-option">
+                <div>
+                    <span class="nav-icon"><i class="fa-solid fa-house bold" style="color: #ffffff;"></i></span><span class="nav-opt bold">Home</span>
+                </div>
+            </div>
+            <div class="nav-2-option search">
+                <div>
+                    <span class="nav-icon"><i class="fa-solid fa-magnifying-glass search-i" style="color: #ffffff;"></i></span><span class="nav-opt">Search</span>
+                </div>
+            </div>
+            <div class="nav-2-option">
+                <div><a href="/home">
+                    <span class="nav-icon"><i class="fa-regular fa-compass" style="color: #ffffff;"></i></span><span class="nav-opt">Explore</span>
+                </a></div>
+            </div>
+            <div class="nav-2-option">
+                <div>
+                    <span class="nav-icon"><i class="fa-solid fa-house" style="color: #ffffff;"></i></span><span class="nav-opt">Reels</span>
+                </div>
+            </div>
+            <div class="nav-2-option">
+                <div>
+                    <span class="nav-icon"><i class="fa-brands fa-facebook-messenger" style="color: #ffffff;"></i></span><span class="nav-opt">Messages</span>
+                </div>
+            </div>
+            <div class="nav-2-option notification">
+                <div>
+                    <span class="nav-icon"><i class="fa-regular fa-heart notification-i" style="color: #ffffff;"></i></span><span class="nav-opt">Notificattions</span>
+                </div>
+            </div>
+            <div class="nav-2-option">
+                <div>
+                    <span class="nav-icon"><i class="fa-solid fa-square-plus" style="color: #ffffff;"></i></span><span class="nav-opt">Create</span>
+                </div>
+            </div>
+            <div class="nav-2-option">
+                <div><a href="/pro">
+                    <span class="nav-icon">
+                    <%if(currUser){%>
+                    <img src="<%=currUser.profile%>" alt="" >
+                    <%}else{%>
+                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" >
+                    <%}%>
+                   </span><span class="nav-opt">Profile</span>
+                </a></div>
+            </div>
+        </div>
+    </div>
+        <div class="nav-3"></div>
+      </div>
+      <div class="search-screen">
+        <div class="search-name">
+            <div class="search-name-div">
+                <span class="search-name-div1">Search</span>
+            </div>
+        </div>
+        <div class="search-bar">
+            <label for=""><span>Search</span><input type="text"><i class="fa-solid fa-circle-xmark" style="color: #ffffff;"></i></label>
+        </div>
+        <hr>
+        <div class="search-bar-recent">
+            <div class="sb-1"><span class="sb-1-1">Recent</span><span class="sb-1-2">Clear all</span></div>
+            <a href="/user/65e1a495c70584ed53f70213"><div class="recent-user"><div class="recent-user-img"><img src="https://yt3.googleusercontent.com/3KxPQzMYlkLVdK6jB3oo9_-uOzAUBzIiXmkPVVMCm0rlQYq7e_4hsBtCOo1WsmqxV2SIOsBFDX0=s176-c-k-c0x00ffffff-no-rj" alt=""></div><div class="sb-2-2"><span>virat.kohli <img src="https://images.news18.com/ibnlive/uploads/2022/11/twitter-blue-16681397734x3.jpg" alt=""></span><span>Virat Kohli . 266M followers</span></div><div class="sb-2-3"><i class="fa-solid fa-xmark"></i></div></div>
+            <a href="/user/65e472e1a2a8996e24a5c6e6"><div class="recent-user"><div class="recent-user-img"><img src="https://sm.mashable.com/t/mashable_in/photo/default/start-the-fireworks-sachin-tendulkar-is-now-the-sixth-indian_g51n.1248.jpg" alt=""></div><div class="sb-2-2"><span>sachintendulkar <img src="https://images.news18.com/ibnlive/uploads/2022/11/twitter-blue-16681397734x3.jpg" alt=""></span><span>Sachin Tendulkar . 47.3M followers</span></div><div class="sb-2-3"><i class="fa-solid fa-xmark"></i></div></div></a>
+        </div>
+      </div>
+      <div class="notification-bar">
+        <div class="notification-name">
+            <div class="notification-name-1">
+                <span class="notification-name-span">Notifications</span>
+            </div>
+        </div>
+        <div class="notification-date"><span class="date-span">Yesterday</span></div>
+        <div class="noti-user-info">
+            <div class="noti-user-info-photo"><img src="https://assets.telegraphindia.com/telegraph/2023/Apr/1682317246_1.jpg" alt=""></div>
+            <div class="noti-user-info-detail"><span>Sachin posted a thread you might like: <br> Dear Threads Algorithm <br><br>
+                I'm looking to connect with people in these fields 💻:  <br><br>
+                ... 1d</span></div>
+        </div>
+      </div>
