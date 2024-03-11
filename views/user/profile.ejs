@@ -14,7 +14,7 @@
                 </div>
             <%}%>-->
             <header>
-                <div class="main-img">
+                <div class="main-img" onclick="fetchRelevantData()">
                   <img src="<%= user.profile %>" alt="">
                 </div>
                 <div class="main-img-details">
@@ -44,7 +44,10 @@
                     </ul>
                     <span style="color: white; font-size: 14px;font-weight: 600;letter-spacing: 10px;"><%= user.name %></span>
                 </div>
+                <div id="output" style="width: 100px;height: 100px;"></div>
+
             </header>
+            
             <footer>
             <h1>POST</h1>
             <div class="posts">
@@ -59,3 +62,100 @@
             </div></div></footer>
         </div>
     </div>
+    <script>
+        // Function to fetch relevant data without refreshing the page
+        function fetchRelevantData() {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', `/fetchData`, true); // Make sure this URL matches the server-side route
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                displayData(data); // Do something with the fetched data
+              } else {
+                console.error('Request failed with status:', xhr.status);
+              }
+            }
+          };
+          xhr.send();
+          
+        }
+
+
+
+        const searchInput = document.getElementById('search-input');
+        const searchResultsDiv = document.getElementById('search-results');
+
+    searchInput.addEventListener('input', async function() {
+        const inputValue = searchInput.value.trim();
+
+        if (inputValue.length === 0) {
+            // Clear the search results if the input is empty
+            searchResultsDiv.innerHTML = '';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/fetch?q=${inputValue}`);
+            const data = await response.json();
+            displayData(data);
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    });
+
+        function displayData(data) {
+            console.log(data);
+        const outputDiv = document.querySelector('.search-bar-recent');
+        outputDiv.innerHTML = ''; // Clear previous data
+        data.forEach(item => {
+        // Create the anchor element
+        let anchor = document.createElement('a');
+        anchor.href = `/user/${item._id}`;
+
+        // Create the outer div element
+        let divOuter = document.createElement('div');
+        divOuter.className = 'recent-user';
+
+        // Create the div for user image
+        let divUserImg = document.createElement('div');
+        divUserImg.className = 'recent-user-img';
+        let imgUser = document.createElement('img');
+        imgUser.src = item.profile;
+        imgUser.alt = '';
+        divUserImg.appendChild(imgUser);
+
+        // Create the div for user details
+        let divDetails = document.createElement('div');
+        divDetails.className = 'sb-2-2';
+        let spanUsername = document.createElement('span');
+        spanUsername.textContent = `${item.username}`;
+        let imgVerified = document.createElement('img');
+        imgVerified.src = 'https://images.news18.com/ibnlive/uploads/2022/11/twitter-blue-16681397734x3.jpg';
+        imgVerified.alt = '';
+        spanUsername.appendChild(imgVerified);
+        divDetails.appendChild(spanUsername);
+        let spanDescription = document.createElement('span');
+        spanDescription.textContent = `${item.name}   ${item.nFollowing} ${item.nFollowers}`;
+        divDetails.appendChild(spanDescription);
+
+        // Create the div for remove icon
+        let divRemoveIcon = document.createElement('div');
+        divRemoveIcon.className = 'sb-2-3';
+        let iconRemove = document.createElement('i');
+        iconRemove.className = 'fa-solid fa-xmark';
+        divRemoveIcon.appendChild(iconRemove);
+
+        // Append all elements to the outer div
+        divOuter.appendChild(divUserImg);
+        divOuter.appendChild(divDetails);
+        divOuter.appendChild(divRemoveIcon);
+
+        // Append the anchor element to the output div
+        anchor.appendChild(divOuter);
+        outputDiv.appendChild(anchor);
+    });
+  }
+
+      </script>
+      

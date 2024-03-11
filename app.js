@@ -246,6 +246,25 @@ app.get('/user/:userId/newpost', userCheck,async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+app.get('/fetch', async (req, res) => {
+    try {
+        // Example: Fetch data based on the query parameter 'q'
+        const inputValue = req.query.q;
+        // Use inputValue in your query to filter data accordingly
+        let query = { username: { $regex: inputValue, $options: 'i' } };
+
+        if (res.locals.currUser) {
+            query._id = { $ne: res.locals.currUser };
+        }
+        
+        const data = await User.find(query);        res.json(data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+
 app.post("/post/:userId",userCheck,async(req,res)=>{
     let userId=req.params.userId;
     const newPostData = {
