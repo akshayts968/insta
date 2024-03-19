@@ -2,11 +2,47 @@
     <div class="centre-display">
         <div class="centre-display-div">
             <div class="video-side">
-                <video class="video-side-v" autoplay loop src="" onclick="playPause(this)"></video>
+                <!--<img class="video-side-img" alt="">-->
             </div>
-            <div class="comment-side"></div>
+            <div class="comment-side">
+                <div class="cs-head">
+                    <img class="status-img"
+                            style="width: 44px; height: 44px; background-color: #ccc; object-fit: cover;" 
+                            class="rounded-circle " src="https://image.telanganatoday.com/wp-content/uploads/2023/10/Anushka-4_V_jpg--442x260-4g.webp?sw=412&dsz=442x260&iw=412&p=false&r=2.625" alt="">
+                            <div>
+                                <span class="cs-head-sp-1">hai</span><br>
+                                <span class="cs-head-sp-2">hai </span>
+                            </div>
+                            <button>...</button>
+                </div>
+                <div class="cs-mid">
+                    <div class="cs-mid-div-1"></div>
+                    <div class="cs-mid-div-2"></div>
+                </div>
+                <div class="cs-bottom">
+                    <div class="cs-bottom-1">
+                        <div class="cs-bottom-1-1">
+                            <span><i class="fa-regular fa-heart" style="color: #ffffff;"></i></span>
+                            <span><i class="fa-regular fa-comment"></i></span>
+                            <span><i class="fa-solid fa-paper-plane"></i></span>
+                        </div>
+                        <div class="cs-bottom-1-2"><i class="fa-solid fa-note-sticky"></i></div>
+                    </div>
+                    <div class="cs-bottom-2">
+                        <span>Liked by sachin and others</span>
+                    </div>
+                    <span>12 hours ago</span>
+                </div>
+                <div class="cs-comment">
+                 <div class="add-comments">
+                    <textarea oninput="typing(this)" name="comment" id="comment" cols="30" rows="auto" placeholder="Add comments..."></textarea>
+  <!--json is remove ddue to error of unddefined post--> 
+                   <a class="ml-1" onclick="commentAdd(this)">Post</a>
+                  </div>
+                </div>
+            </div>
         </div>
-        <button class="closeButton" onclick="centreVideo(this)"><i class="fa-solid fa-xmark "></i></button>
+        <button class="closeButton" onclick="centreVideo(this,'hai')"><i class="fa-solid fa-xmark "></i></button>
     </div>
     <div class="nav-bar-div side-nav">
         <div>
@@ -92,3 +128,4 @@
                 ... 1d</span></div>
         </div>
       </div>
+      <script src="main.js"></script>

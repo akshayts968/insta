@@ -13,7 +13,10 @@ const session=require("express-session");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const Auth=require("./models/aut.js");
-
+const bodyParser = require("body-parser");
+const Comment=require("./models/comment.js");
+// Middleware to parse JSON bodies
+app.use(bodyParser.json());
 const userCheck=(req,res,next)=>{
     const userId = req.params.userId;
 if(res.locals.currUser&&res.locals.currUser.equals(userId))
@@ -24,7 +27,8 @@ res.redirect("/user");
 };
 const isLogin=(req,res,next)=>{
 if(res.locals.currUser)
-{  return next();
+{   console.log(res.locals.currUser);
+     return next();
 }
 res.redirect("/login");
 };
@@ -101,7 +105,25 @@ app.get("/f",async(req,res)=>{
         console.error('Error updating users:', error);
       }
 });
-
+app.get("/fg",async(req,res)=>{
+    try {
+        const update = {
+            $set: {
+                nLikes: 0, // Default value for nLikes
+                likes: [], // Default value for likes
+                nComments: 0, // Default value for nComments
+                comments: [] // Default value for comments
+            }
+        };
+    
+        // Update all documents in the collection
+        const result = await Post.updateMany({}, update);
+    
+        console.log('Documents updated successfully:', result);
+    } catch (error) {
+        console.error('Error updating documents:', error);
+    }
+});
 
 app.get("/login",(req,res)=>{
 res.render("login/login.ejs");
@@ -139,8 +161,50 @@ app.get("/user",wrapAsync(async(req,res)=>{
   res.render("user/main.ejs",{users});
 }));
 
+app.get("/u",wrapAsync(async(req,res)=>{
+let users = await User.find().populate("post");
+  res.render("home/home.ejs",{users});
+}));
 
+app.post("/updateDatabase", isLogin, wrapAsync(async (req, res) => {
+    const commentText = req.body.comment;
+    const postId = req.body.post;
+    let postIdStr = postId.replace(/"/g, '').trim();
+    
+    try {
+        // Find the post by its ID
+        const post = await Post.findById(postIdStr);
+        console.log("post",post);
+        if (!post) {
+            // If the post is not found, return an error response
+            return res.status(404).send("Post not found");
+        }
 
+        // Create a new Comment instance
+        const newComment = new Comment({
+            comment: commentText,
+            owner: res.locals.currUser._id||"UNKNOW",
+            postOwner: postIdStr,
+        });
+
+        // Save the new comment
+        await newComment.save();
+
+        // Update the post with the new comment ID and increment nComments
+        post.comments.push(newComment._id);
+        post.nComments++;
+
+        // Save the updated post
+        await post.save();
+
+        // Send a success response
+        res.sendStatus(200);
+    } catch (error) {
+        // If an error occurs, return a 500 Internal Server Error response
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+}));
 
 
 
@@ -263,6 +327,59 @@ app.get('/fetch', async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   });
+  app.get('/fetchcomment', async (req, res) => {
+    try {
+        // Example: Fetch data based on the query parameter 'q'
+        const inputValue = req.query.q;
+        if (inputValue.length != 0) {
+        console.log("input array", inputValue);
+        const inputArray = inputValue.split(',');
+        
+        let data = [];
+        console.log("Size of arr",inputArray.length);
+        for (const comment of inputArray) {
+            let comments = await Comment.findById(comment);
+            console.log("comments are", comments);
+            
+            let user = await User.findById(comments.owner);
+            console.log("user", user);
+            
+            const userDetails = {
+                userId: user._id||"fff",
+                profile: user.profile||"fff",
+                username: user.username||"fff",
+            };
+            
+            comments = { ...comments.toObject(), userDetails };
+            console.log("comments after update are", comments);
+            
+            data.push(comments);
+            console.log("Data server ", data);
+        }
+        console.log("Data is in server ", data);
+        res.json(data);
+    }
+    else{
+        res.json("");
+    }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.delete('/user/:useId/:commentId',async(req,res)=>{
+    try {
+        let { userID,commentId } = req.params;
+        console.log(userID,"welcome ",commentId);
+        await Comment.findByIdAndDelete(commentId);
+        await Post.findByIdAndUpdate(userID, { $pull: { comments: commentId } });
+        res.status(200).send('Comment deleted successfully');
+    } catch (error) {
+        // Handle errors appropriately
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 
 app.post("/post/:userId",userCheck,async(req,res)=>{

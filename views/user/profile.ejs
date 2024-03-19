@@ -14,7 +14,7 @@
                 </div>
             <%}%>-->
             <header>
-                <div class="main-img" onclick="fetchRelevantData()">
+                <div class="main-img">
                   <img src="<%= user.profile %>" alt="">
                 </div>
                 <div class="main-img-details">
@@ -64,29 +64,14 @@
     </div>
     <script>
         // Function to fetch relevant data without refreshing the page
-        function fetchRelevantData() {
-          const xhr = new XMLHttpRequest();
-          xhr.open('GET', `/fetchData`, true); // Make sure this URL matches the server-side route
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                displayData(data); // Do something with the fetched data
-              } else {
-                console.error('Request failed with status:', xhr.status);
-              }
-            }
-          };
-          xhr.send();
-          
-        }
+    
 
 
 
         const searchInput = document.getElementById('search-input');
         const searchResultsDiv = document.getElementById('search-results');
 
-    searchInput.addEventListener('input', async function() {
+        searchInput.addEventListener('input', async function() {
         const inputValue = searchInput.value.trim();
 
         if (inputValue.length === 0) {
