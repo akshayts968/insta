@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/explore.css">
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="/main_home.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+        <%- include("../profile/side.ejs") %>
+        <div class="main-home">
+           <div class="main-home-f">
+             <div class="home-ff">
+                <div class="home-status">
+                    <ul style="list-style: none;">
+                        <li class="status">
+                            <img class="status-img"
+                            style="width: 50px; height: 50px; background-color: #ccc;" 
+                            class="rounded-circle " src="https://image.telanganatoday.com/wp-content/uploads/2023/10/Anushka-4_V_jpg--442x260-4g.webp?sw=412&dsz=442x260&iw=412&p=false&r=2.625" alt="">
+                            <span style="font-size: 12px; color: white;">ALAN</span>
+                        </li>
+                        <li class="status">
+                            <img 
+                            style="width: 50px; height: 50px; background-color: #ccc;" 
+                            class="rounded-circle " src="https://image.telanganatoday.com/wp-content/uploads/2023/10/Anushka-4_V_jpg--442x260-4g.webp?sw=412&dsz=442x260&iw=412&p=false&r=2.625" alt="">
+                            <span style="font-size: 12px; color: white;">ALAN</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="home-posts">
+                    <div class="home-posts-inDiv">
+                        <%for(user of users){%>
+                            <%for(post of user.post){%>
+                        <article>
+                            <div class="home-post">
+                                <div class="post-heading">
+                                    <span class="home-post-profile-pic"><img src="<%=user.profile%>" alt=""></span>
+                                     <span class="home-post-ownername">
+                                        <span class="ml-3" style="color:#f5f5f5;"><%=user.username%></span>
+                                        <span style="color:#f5f5f5;">4h</span>
+                                     </span>
+                                    <span class="float-right">...</span>
+                                </div>
+                                <div class="hPost">
+                                    <img src="<%=post.videourl%>" alt="">
+                                </div>
+                                <div class="post-detail">
+                                   <div class="post-buttons">
+                                    <span class="ml-2"><i onclick="heartBeat(this)" class="fa-solid fa-heart"></i></span>
+                                    <span onclick="centreVideo(this,'<%=JSON.stringify(post) %>','<%=JSON.stringify(user) %>')" class="ml-2"><i class="fa-regular fa-comment"></i></span>
+                                   </div>
+                                   <div class="add-Comments">
+                                        <textarea oninput="typing(this)" name="comment" id="comment" class="comment" cols="30" rows="auto" placeholder="Add comments..."></textarea>
+                                        <a class="ml-1" onclick="commentAdd(this,'<%= JSON.stringify(post._id) %>')">Post</a>
+                                      </div>
+                                   
+                                </div>
+                            </div>
+                        </article>
+                        <%}%>
+                        <%}%>
+                    </div>
+                </div>
+             </div>
+           </div>
+        </div>
+    </div>
+    <script src="home.js"></script>
+    <script src="explore.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
