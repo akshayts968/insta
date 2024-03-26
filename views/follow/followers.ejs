@@ -9,15 +9,18 @@
 <body>
     <div class="followers-main">
         <div class="followers-content">
-          <div class="follow-1"><h1>Followers</h1><a href="/user/<%=user._id%>"><i class="fa-solid fa-xmark"></i></a></div>
+          <div class="follow-1">
+            <%if(follow){%><h1>Followers</h1><%} else{%>
+            <h1>Followings</h1><%}%>
+          <a href="/user/<%=user._id%>"><i class="fa-solid fa-xmark"></i></a></div>
           <div class="follow-lists">
-           <%for(follow of followData){%>
+           <%for(data of followData){%>
             <div class="follow-list">
-                <img class="follow-list-1" src="<%=follow.profile%>" alt="">
+                <img class="follow-list-1" src="<%=data.profile%>" alt="">
                 <div class="follow-list-2">
-                 <p><%=follow.name%></p>
+                 <p><%=data.name%></p>
                 </div>
-                <button class="follow-list-3">Follow</button>
+                <%if(follow){%><button class="follow-list-3">Follow</button><%}%>
             </div>
         <%}%>
           </div>

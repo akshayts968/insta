@@ -163,7 +163,9 @@ app.get("/user",wrapAsync(async(req,res)=>{
 
 app.get("/u",wrapAsync(async(req,res)=>{
 let users = await User.find().populate("post");
-  res.render("home/home.ejs",{users});
+let videos=await User.find({ story: { $exists: true, $ne: null } }, { story: 1, _id: 0 });
+console.log("videos are: ",videos);
+  res.render("home/home.ejs",{users,videos});
 }));
 
 app.post("/updateDatabase", isLogin, wrapAsync(async (req, res) => {
@@ -230,14 +232,45 @@ app.get('/user/:userId/followers',followCheck,async (req, res) => {
         const follower = await User.findById(followerId);
         followData.push(follower);
         }
-        res.render("boiler/followers.ejs", { user,followData, exists: res.locals.exists });
+        const follow=true;
+        res.render("boiler/followers.ejs", { user,followData, exists: res.locals.exists,follow });
     } catch (err) {
         console.error('Error fetching user:', err);
         res.status(500).send('Internal Server Error');
     }
 });
-
-
+app.get('/user/:userId/followings',followCheck,async (req, res) => {
+    try {
+        // Fetch user data from the database
+        const user = await User.findById(req.params.userId).populate("post");
+        // Render user information in the view
+        const followings = user.followings;
+        let followData=[];
+        for (const followingId of followings) {
+        const follower = await User.findById(followingId);
+        followData.push(follower);
+        }
+        const follow=false;
+        res.render("boiler/followers.ejs", { user,followData, exists: res.locals.exists,follow });
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+app.post('/user/:userId/story',isLogin,async (req, res) => {
+    try {
+        // Fetch user data from the database
+        console.log(req.params);
+        const user = await User.findById(req.params.userId);
+        // Render user information in the view
+        user.story=req.body.story;
+        await user.save();
+        res.send(typeof req.body.story);
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 app.get('/user/:userId',followCheck,async (req, res) => {
     try {
@@ -367,13 +400,15 @@ app.get('/fetch', async (req, res) => {
     }
 });
 
-app.delete('/user/:useId/:commentId',async(req,res)=>{
+app.delete('/user/:postId/:commentId',async(req,res)=>{
     try {
-        let { userID,commentId } = req.params;
-        console.log(userID,"welcome ",commentId);
+        
+        let { postId,commentId } = req.params;
+        console.log(commentId,"welcome ",postId);
         await Comment.findByIdAndDelete(commentId);
-        await Post.findByIdAndUpdate(userID, { $pull: { comments: commentId } });
-        res.status(200).send('Comment deleted successfully');
+        await Post.findByIdAndUpdate(postId, { $pull: { comments: commentId } });
+        res.send(req.params);
+        //res.status(200).send('Comment deleted successfully');
     } catch (error) {
         // Handle errors appropriately
         console.error(error);

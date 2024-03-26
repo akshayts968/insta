@@ -16,7 +16,17 @@ function pauseVideo(obj) {
 let con=true;
 let val;
 
-function centreVideo(obj,post="",user){
+function centreVideo(obj,post="",user,currUser){
+    console.log("currUsexr is: ",currUser);
+    let currUserId="hai ";
+    if(currUser){
+        currUser = JSON.parse(currUser);
+        console.log("WORK WHEN USER IS LOGIN");
+        currUserId=currUser._id;
+        console.log("currUserId is: ",currUserId);
+        console.log("currUser is: ",currUser.username);
+
+    }
     let dataPost;
     if(user){
         let img=document.querySelector(".status-img");
@@ -30,7 +40,8 @@ function centreVideo(obj,post="",user){
         val=dataPost._id;
         console.log("dataId",dataPost._id);
         console.log("datapost",dataPost);
-        fetchCommand(dataPost.comments);
+        console.log("currUsexrId is: ",currUserId);
+        fetchCommand(dataPost.comments,dataPost._id,currUserId);
         
     }
     
@@ -79,20 +90,20 @@ con=!con;
 
 
 
-async function fetchCommand(comments){
+async function fetchCommand(comments,id,currUserId){
     try {
         console.log("comments is",comments);
         const response = await fetch(`/fetchcomment?q=${comments}`);
         const data = await response.json();
         console.log("data is missing",data);
-        displayData(data);
+        displayData(data,id,currUserId);
     } catch (error) {
         console.error('Error fetching search results:', error);
     }
 }
 
 
-function displayData(data) {
+function displayData(data,id,currUserId) {
 console.log("dataa",data);
 const outputDiv = document.querySelector('.cs-mid-div-2');
 outputDiv.innerHTML = ''; // Clear previous dat
@@ -110,25 +121,30 @@ for(item of data) {
     const profileImg = document.createElement('img');
     profileImg.src = item.userDetails.profile || '';
     profileImg.alt = 'Profile Image';
+    console.log("same",item.userDetails.userId,currUserId);
+    if(item.userDetails.userId===currUserId){
+        console.log("same");
+    
     const deleteForm = document.createElement('form');
     deleteForm.method = 'post'; // Or 'DELETE' if your server supports it directly
-    //deleteForm.action = `/user/${item.userDetails.userId}/${item._doc._id}?_method=DELETE`;
+    deleteForm.action = `/user/${id}/${item._id}?_method=DELETE`;
     
     // Create the button element
-    /*const deleteButton = document.createElement('button');
+    const deleteButton = document.createElement('button');
     deleteButton.type = 'submit';
     deleteButton.textContent = 'Delete';
-    */
     // Append the button to the form
     
     
     // Append the form to the outputDiv
     outputDiv.appendChild(deleteForm);
-    // Append commentDiv, ownerDiv, and profileImg to outputDiv
+    deleteForm.appendChild(deleteButton);
+    }
+     // Append commentDiv, ownerDiv, and profileImg to outputDiv
     outputDiv.appendChild(commentDiv);
     outputDiv.appendChild(ownerDiv);
     outputDiv.appendChild(profileImg);
-    //deleteForm.appendChild(deleteButton);
+   
 };
     
 }
