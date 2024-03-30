@@ -5,6 +5,7 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/temperary";
 const path = require("path");
 const User = require("./models/user.js");
 const Post = require("./models/post.js");
+const {Message, Conversation}=require("./models/message.js");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const wrapAsync = require("./utils/wrapAsync.js");
@@ -63,6 +64,45 @@ main().then(() => {
 async function main() {
     await mongoose.connect(MONGO_URL);
 };
+app.get("/message",(req,res)=>{
+res.render("message/message.ejs");
+});
+app.get("/m",(req,res)=>{
+    res.render("message/m.ejs");
+});
+app.post("/m/me",async(req,res)=>{
+const newMessage=new Message({
+    sender:"65e1a495c70584ed53f70211",
+    receiver:"65e1a495c70584ed53f70213",
+    content:req.body.converstaion
+});
+let currUserId="65e1a495c70584ed53f70211";
+let receiverId="65e1a495c70584ed53f70213";
+console.log(req.body);
+await newMessage.save();
+const sortedParticipants = [currUserId, receiverId].sort();
+console.log("sorted",sortedParticipants);
+const existingConversation = await Conversation.findOne({
+  participants: { $all: sortedParticipants }
+});
+  if(existingConversation){
+    console.log( "this is",existingConversation);
+    existingConversation.messages.push(newMessage._id);
+    await existingConversation.save();
+  }
+  else{
+    const sortedParticipants = [currUserId, receiverId].sort();
+    const newConversation = new Conversation({
+        participants:sortedParticipants,
+        messages:[newMessage._id],
+    });
+    console.log(newConversation);
+    await newConversation.save();
+  }
+  console.log(existingConversation);
+
+
+});
 app.get("/", (req, res) => {
     res.send("Hi,I am root");
 });
