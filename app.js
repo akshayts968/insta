@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const http = require("http");
+const socketIo = require("socket.io");
+const { ObjectId } = require('mongodb');
+const server = http.createServer(app);
+const io = socketIo(server);
 const MONGO_URL = "mongodb://127.0.0.1:27017/temperary";
 const path = require("path");
 const User = require("./models/user.js");
@@ -48,8 +53,10 @@ app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
+    res.locals.coUser="65e1a47dc70584ed53f70210",
     next();
 });
+
 const userRouter = require("./routes/user.js");
 const loginRouter = require("./routes/log-sign.js");
 app.use("/user", userRouter);
@@ -64,11 +71,253 @@ main().then(() => {
 async function main() {
     await mongoose.connect(MONGO_URL);
 };
-app.get("/message",(req,res)=>{
-res.render("message/message.ejs");
+function curr(){
+    return res.locals.currUser;
+}
+let ERoom;
+let mainArray;
+let coUser;
+let res;
+    const joinedRooms = new Set(); // Initialize an empty Set
+    let currArt;
+    let Aarray;
+    
+    mainArray=Aarray;
+    let Kroom;
+    //ERoom=room;
+    io.on("connection", (socket) => {
+    console.log("!A user connected");
+
+    socket.on('join', () => {
+        
+            socket.join(Kroom);
+            
+    }
+    );
+socket.on(`chat message1`, async(msg) => {
+//console.log("Message: ", msg);
+/*console.log("Message pic : ", msg.pic);
+console.log("Message cURR: ", msg.curr);
+console.log("Message cURR: ", res.locals.currUser._id);*/
+const id1 = currArt;
+const id2 = msg.curr;
+//console.log("curr,msg.curr",currArt,id2);       //curr,msg.curr new ObjectId('65e282d6933a8f9159e40acf') 65e1a495c70584ed53f70213
+const id1String = id1 instanceof ObjectId ? id1.toString() : id1;
+const id2String = id2 instanceof ObjectId ? id2.toString() : id2;
+if(id2String){
+    
+    const newMessage=new Message({
+        sender:id2String,
+        receiver:coUser,
+        content:msg.message
+    });
+    console.log(newMessage);
+// curr,msg.curr new ObjectId('65e282d6933a8f9159e40acf') 65e1a495c70584ed53f70213
+
+    //console.log("curr hj,msg.curr",currArt,id2);  
+    let currUserId=id2String;
+    let receiverId=coUser;
+    console.log(msg.message);
+    //console.log(newMessage);
+    await newMessage.save();
+    const sortedParticipants = [currUserId, receiverId].sort();
+    //console.log("sorted",sortedParticipants);
+    const existingConversation = await Conversation.findOne({
+      participants: { $all: sortedParticipants }
+    });
+
+      if(existingConversation){
+        //console.log( "this is",existingConversation);
+        existingConversation.messages.push(newMessage._id);
+        await existingConversation.save();
+      }
+      else{
+        const sortedParticipants = [currUserId, receiverId].sort();
+        const newConversation = new Conversation({
+            participants:sortedParticipants,
+            messages:[newMessage._id],
+        });
+        //console.log(newConversation);
+        await newConversation.save();
+      }
+      //console.log(existingConversation);
+    socket.broadcast.to(Kroom).emit(`chat message`, msg);
+}
+else{
+    console.log("haii  jabs");
+    console.log("haii  jabs",id1String);
+    console.log("haii  jabs",id2String);
+}
+
+
+
+/*const stringId1 = id1.toString();
+const stringId2 = id2.toString();
+if(stringId1===stringId2){
+    socket.broadcast.to(room).emit(`chat message`, msg);
+}
+else{
+    console.log("haii  jabs");
+    console.log("haii  jabs",stringId1);
+    console.log("haii  jabs",stringId2);
+}*/
 });
-app.get("/m",(req,res)=>{
-    res.render("message/m.ejs");
+socket.on("disconnect", () => {
+console.log("A! user disconnected");
+});
+});
+/*function sock(coUser,res){
+    const joinedRooms = new Set(); // Initialize an empty Set
+            let curruser = res.locals.currUser._id;
+            //console.log("COUSER",coUser);
+            //console.log("USER",curruser);
+            //console.log("USERis",res.locals.currUser._id);
+            let array = [curruser, coUser];
+            array.sort();
+            mainArray=array;
+            let room=`${array[0]}${array[1]}`;
+            //console.log("room is",room);
+            ERoom=room;
+            io.on("connection", (socket) => {
+                socket.on('join', () => {
+                    if (!joinedRooms.has(room)) {
+                        socket.join(room);
+                        joinedRooms.add(room);
+                    }
+                }
+                );
+            socket.on(`chat message1`, async(msg) => {
+            //console.log("Message: ", msg);
+            /*console.log("Message pic : ", msg.pic);
+            console.log("Message cURR: ", msg.curr);
+            console.log("Message cURR: ", res.locals.currUser._id);
+            const id1 = res.locals.currUser._id;
+            const id2 = msg.curr;
+            const id1String = id1 instanceof ObjectId ? id1.toString() : id1;
+            const id2String = id2 instanceof ObjectId ? id2.toString() : id2;
+            if(id1String===id2String){
+                socket.broadcast.to(room).emit(`chat message`, msg);
+                const newMessage=new Message({
+                    sender:id2String,
+                    receiver:coUser,
+                    content:msg.message
+                });
+                let currUserId=id2String;
+                let receiverId=coUser;
+               // console.log(msg.message);
+                //console.log(newMessage);
+                await newMessage.save();
+                const sortedParticipants = [currUserId, receiverId].sort();
+                //console.log("sorted",sortedParticipants);
+                const existingConversation = await Conversation.findOne({
+                  participants: { $all: sortedParticipants }
+                });
+                  if(existingConversation){
+                    //console.log( "this is",existingConversation);
+                    existingConversation.messages.push(newMessage._id);
+                    await existingConversation.save();
+                  }
+                  else{
+                    const sortedParticipants = [currUserId, receiverId].sort();
+                    const newConversation = new Conversation({
+                        participants:sortedParticipants,
+                        messages:[newMessage._id],
+                    });
+                    //console.log(newConversation);
+                    await newConversation.save();
+                  }
+                  //console.log(existingConversation);
+            }
+            else{
+                console.log("haii  jabs");
+                console.log("haii  jabs",id1String);
+                console.log("haii  jabs",id2String);
+            }
+
+            
+            
+            /*const stringId1 = id1.toString();
+            const stringId2 = id2.toString();
+            if(stringId1===stringId2){
+                socket.broadcast.to(room).emit(`chat message`, msg);
+            }
+            else{
+                console.log("haii  jabs");
+                console.log("haii  jabs",stringId1);
+                console.log("haii  jabs",stringId2);
+            }
+        });
+        socket.on("disconnect", () => {
+            console.log("A! user disconnected");
+        });
+    });
+
+}*/
+    
+app.get("/chat",(req,res)=>{
+res.render("temp.ejs");
+});
+app.get("/message",async (req,res)=>{
+    try {
+        const users = await User.find().limit(6);
+        res.render("message/message.ejs", { users,sara:"",existingConversations:""});
+      
+    } catch (error) {
+        console.log(error);
+    }
+});
+app.get("/messages/:coUserid", async (req, res) => {
+    try {
+        let coUserid;
+           coUserid = req.params.coUserid; // Accessing the captured value
+           /* console.log("User ID:", coUserid);
+            console.log("User ID2:", req.params.coUserid);*/
+        const users = await User.find().limit(6);
+        if(coUserid==="main.js"){
+          res.send(coUserid);
+        }
+        else{
+            
+            res.locals.coUser=coUserid;
+            let currUser=res.locals.currUser;
+            currArt = currUser._id;
+            coUser=coUserid;
+            if(currArt===coUser){
+                console.log("not save");
+            }
+            Aarray = [currArt, coUser]
+            Aarray.sort();
+            if(Aarray[0].toString()===Aarray[1].toString()){
+                console.log("not save now");
+            }
+            Kroom=`${Aarray[0]}${Aarray[1]}`;
+            //console.log("room is",Kroom);
+            //sock(coUserid,res);
+            const coSara = await User.findById(coUserid);
+            let array = [currUser, coUserid];
+            array.sort();
+            const participantObjectIds = array.map(id => new ObjectId(id));
+            const existingConversations = await Conversation.find({
+                participants: { $all: participantObjectIds }
+            }).populate("messages");
+            res.render("message/message.ejs", { users, sara: coSara,currUser,existingConversations});
+        }
+        // Corrected typo: sara instead of coSara
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.get("/m",async(req,res)=>{
+    const participantIds = ["65e1a495c70584ed53f70213", "65e282d6933a8f9159e40acf"];
+    const participantObjectIds = participantIds.map(id => new ObjectId(id));
+    
+    const existingConversations = await Conversation.find({
+        participants: { $all: participantObjectIds }
+    }).populate("messages");
+    
+    res.send(existingConversations); //res.render("message/m.ejs");
 });
 app.post("/m/me",async(req,res)=>{
 const newMessage=new Message({
@@ -273,6 +522,6 @@ app.use((err, req, res, next) => {
     res.status(statusCode).send(message);
     //res.status(statusCode).send(message);
 });
-app.listen(8080, () => {
+server.listen(8080, () => {
     console.log("server is listening to port 8080");
 });

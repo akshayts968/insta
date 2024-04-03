@@ -24,76 +24,143 @@
               <span>Requests (3)</span>
               </div>
               <div class="messages-div">
-                <div class="messages">
-                    <img class="messages-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeylgs8C7PavbYvNpbtQ8fUEXYRKUSKMQkbg&usqp=CAU" alt="">
+                <%for(user of users){%>
+                    <a href="/messages/<%=user._id%>">
+                    <div class="messages">
+                        <img class="messages-img" src="<%=user.profile%>" alt="">
                     <div>
-                        <div class="messages-img-div">The Futura Labs</div>
+                        <div class="messages-img-div"><%=user.name%></div>
                         <span class="messages-img-span">Active 15h ago</span>
                     </div>
                 </div>
+                </a>
+                <%}%>
               </div>
             </div>
             <div class="message-right">
-              <div class="message-right-head">
-                <div class="message-right-head-profile">
-                    <img class="messages-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeylgs8C7PavbYvNpbtQ8fUEXYRKUSKMQkbg&usqp=CAU" alt="">
-                    <div>
-                        <div class="messages-img-div">The Futura Labs</div>
-                        <span class="messages-img-span">Active 15h ago</span>
-                    </div>
-                </div>
-                <div class="message-right-head-icons">
-                <div >
-                    <i class="fa-solid fa-phone" style="color: #FFD43B;"></i>
-                </div>
-                <div><i class="fa-solid fa-video" style="color: #63E6BE;"></i>
-                </div>
-                <div>
-                    <i class="fa-solid fa-circle-info" style="color: #B197FC;"></i></div>
-                </div>
-
-            </div>
-            <div class="message-chat">
-                <div class="message-chat-profile">
-                <img class="messages-img pimg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeylgs8C7PavbYvNpbtQ8fUEXYRKUSKMQkbg&usqp=CAU" alt="">
-                    <div>
-                        <div class="messages-img-div">The Futura Labs</div>
-                    </div>
-                    <button>VIEW PROFILE</button>
-
-                </div>
-                <div class="msg-container">
-                    <img class="msg-sender" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeylgs8C7PavbYvNpbtQ8fUEXYRKUSKMQkbg&usqp=CAU" alt="">
-                    <div class="msg-content">
-                       This is a good place
-                    </div>
-                </div>
-                <div class="msg-container">
-                    <img class="msg-sender" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeylgs8C7PavbYvNpbtQ8fUEXYRKUSKMQkbg&usqp=CAU" alt="">
-                    <div class="msg-content">
-                       Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, nesciunt exercitationem libero temporibus distinctio recusandae pariatur perferendis sint eaque non consequuntur. Ullam, nihil cum veniam quos inventore officiis ex blanditiis.
-                    </div>
-                </div>
-                <div class="msg-container  msg-receiver">
-                    <img class="msg-sender" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeylgs8C7PavbYvNpbtQ8fUEXYRKUSKMQkbg&usqp=CAU" alt="">
-                    <div class="msg-content">
-                       This is a good place
-                    </div>
-                </div>
-             </div>
+                <%if(sara){%>
+                <div class="message-right-head">
+                    <div class="message-right-head-profile">
+                                       <img class="messages-img" src="<%=sara.profile%>" alt="">
+                                       <div>
+                                           <div class="messages-img-div"><%=sara.name%></div>
+                                           <span class="messages-img-span">Active 15h ago</span>
+                                       </div>
+                                   </div>
+                                   <div class="message-right-head-icons">
+                                   <div >
+                                       <i class="fa-solid fa-phone" style="color: #FFD43B;"></i>
+                                   </div>
+                                   <div><i class="fa-solid fa-video" style="color: #63E6BE;"></i>
+                                   </div>
+                                   <div>
+                                       <i class="fa-solid fa-circle-info" style="color: #B197FC;"></i></div>
+                                   </div>
+                               </div>
+                               <div class="message-chat">
+                                   <div class="message-chat-profile">
+                                   <img class="messages-img pimg" src="<%=sara.profile%>" alt="">
+                                       <div>
+                                           <div class="messages-img-div"><%=sara.name%></div>
+                                       </div>
+                                       <a href="/user/<%=sara._id%>"><button>VIEW PROFILE</button></a>
+                                   </div>
+                                   <div class="msg-container">
+                                       <img class="msg-sender" src="<%=sara.profile%>" alt="">
+                                       <div class="msg-content">
+                                          This is a good place
+                                       </div>
+                                   </div>
+                                   <div class="msg-container">
+                                       <img class="msg-sender" src="<%=sara.profile%>" alt="">
+                                       <div class="msg-content">
+                                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, nesciunt exercitationem libero temporibus distinctio recusandae pariatur perferendis sint eaque non consequuntur. Ullam, nihil cum veniam quos inventore officiis ex blanditiis.
+                                       </div>
+                                   </div>
+                                   <div class="msg-container  msg-receiver">
+                                       <img class="msg-sender" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeylgs8C7PavbYvNpbtQ8fUEXYRKUSKMQkbg&usqp=CAU" alt="">
+                                       <div class="msg-content">
+                                          This is a good place
+                                       </div>
+                                   </div>
+                                   <%if(existingConversations){%>
+                                    <%existingConversations.forEach(conversation => { conversation.messages.forEach(message => {%>
+                                        <% if(!(message.sender.toString() === sara._id.toString()) ){ %>
+                                           <div class="msg-container  msg-receiver">
+                                            <img class="msg-sender" src="<%=currUser.profile%>" alt="">
+                                            <div class="msg-content">
+                                                <%=message.content%>
+                                            </div>
+                                        </div>
+                                        <%}else{%>
+                                            <div class="msg-container">
+                                             <img class="msg-sender" src="<%=sara.profile%>" alt="">
+                                             <div class="msg-content">
+                                                 <%=message.content%>
+                                             </div>
+                                         </div>
+                                         <%}%>
+                                    <%});});%>
+                                    <%}%>
+                                </div>
+                                <div class="msg-send-btn">
+                                   <input type="text" id="messageInput">
+                                   <button id="sendMessageBtn">Send</button>
+                               </div>
+                               <%}%>
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var navOption = document.querySelectorAll(".nav-opt");
-            if (navOption) {
-                navOption.forEach(item=>{
-                    item.style.display = "none";
-                })
-            }
-            console.log(navOption);
-        });
-    </script>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+    if('<%=sara._id%>'){
+        const socket = io();
+    document.addEventListener("DOMContentLoaded", function() {
+       // console.log("join condition");
+    socket.emit('join');
+     });
+    let joinc=true;
+    var messageInput = document.getElementById("messageInput");
+    var sendMessageBtn = document.getElementById("sendMessageBtn");
+       sendMessageBtn.addEventListener("click", function() {
+        var messageText = messageInput.value;
+        const messageData = {
+            User: '<%=sara._id%>',
+            curr:'<%=currUser._id%>',
+            message: messageText,
+            pic:'<%=currUser.profile%>'
+        };
+       
+        //console.log("this is message", messageData);
+        if (messageText.trim() !== "") {
+            socket.emit(`chat message1`, messageData);
+            console.log("hai this is error");
+            messageInput.value = "";
+        }
+        var messageHtml = `
+            <div class="msg-container msg-receiver">
+                <img class="msg-sender" src="<%=currUser.profile%>" alt="">
+                <div class="msg-content">${messageText}</div>
+            </div>
+        `;
+        var messageContainer = document.querySelector(".message-chat");
+        messageContainer.innerHTML+=messageHtml;
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+    socket.on("chat message", (msg) => {
+        var messageHtml = `
+            <div class="msg-container">
+                <img class="msg-sender" src=${msg.pic} alt="">
+                <div class="msg-content">${msg.message}</div>
+            </div>
+        `;
+        //console.log("hai is error");
+        var messageContainer = document.querySelector(".message-chat");
+            messageContainer.innerHTML+=messageHtml;
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    });
+    }
+    
+</script>
 </body>
 </html>
