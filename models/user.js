@@ -8,6 +8,9 @@ const newUser=new Schema({
         type:String,
         required:true,
     },
+    story:{
+        type:String,
+    },
     profile:{
         type:String,
         default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREUXDpKCAbTnzHHnmTP6JZc_rzytqcNO7_og&usqp=CAU",

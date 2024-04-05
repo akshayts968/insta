@@ -14,23 +14,27 @@
 <body>
     <div class="main">
         <%- include("../profile/side.ejs") %>
+        <div class="wideo">
+        <div class="play-video">
+            <video onclick="playPause(this)" src="D4445BCCB3ADDA228149B479CA4B9E94_video_dashinit.mp4"></video>
+        </div>
+        <button id="close-btn" onclick="toggleVideo(this)" style="position: absolute; right: 0; font-size: 30px; width: 50px; height: 50px;">X</button>
+        </div>
+            <div id="player"></div>
         <div class="main-home">
            <div class="main-home-f">
              <div class="home-ff">
                 <div class="home-status">
                     <ul style="list-style: none;">
+                        <% for (let video of videos) { %>
+                            <% let story = video.story.replace(/"/g, '')%>
                         <li class="status">
-                            <img class="status-img"
+                            <img onclick="flex('<%= story %>')" class="status-img"
                             style="width: 50px; height: 50px; background-color: #ccc;" 
-                            class="rounded-circle " src="https://image.telanganatoday.com/wp-content/uploads/2023/10/Anushka-4_V_jpg--442x260-4g.webp?sw=412&dsz=442x260&iw=412&p=false&r=2.625" alt="">
+                            class="rounded-circle " src='https://resize.indiatvnews.com/en/resize/newbucket/1080_-/2024/03/76251-1711009841.jpg' alt="">
                             <span style="font-size: 12px; color: white;">ALAN</span>
                         </li>
-                        <li class="status">
-                            <img 
-                            style="width: 50px; height: 50px; background-color: #ccc;" 
-                            class="rounded-circle " src="https://image.telanganatoday.com/wp-content/uploads/2023/10/Anushka-4_V_jpg--442x260-4g.webp?sw=412&dsz=442x260&iw=412&p=false&r=2.625" alt="">
-                            <span style="font-size: 12px; color: white;">ALAN</span>
-                        </li>
+                            <%}%>
                     </ul>
                 </div>
                 <div class="home-posts">
@@ -53,7 +57,7 @@
                                 <div class="post-detail">
                                    <div class="post-buttons">
                                     <span class="ml-2"><i onclick="heartBeat(this)" class="fa-solid fa-heart"></i></span>
-                                    <span onclick="centreVideo(this,'<%=JSON.stringify(post) %>','<%=JSON.stringify(user) %>')" class="ml-2"><i class="fa-regular fa-comment"></i></span>
+                                    <span onclick="centreVideo(this,'<%=JSON.stringify(post) %>','<%=JSON.stringify(user) %>','<%=JSON.stringify(currUser) %>')" class="ml-2"><i class="fa-regular fa-comment"></i></span>
                                    </div>
                                    <div class="add-Comments">
                                         <textarea oninput="typing(this)" name="comment" id="comment" class="comment" cols="30" rows="auto" placeholder="Add comments..."></textarea>
@@ -71,8 +75,30 @@
            </div>
         </div>
     </div>
+    <script>
+        function flex(obj){
+            var wideoDiv = document.querySelector('.wideo');
+            wideoDiv.style.display = 'flex';
+            var video = wideoDiv.querySelector('video');
+            video.src=obj;
+            video.style.objectFit="contain";
+            if (video.paused) {
+                video.play();
+            } 
+        }
+function toggleVideo(button) {
+  var video = button.previousElementSibling.querySelector('video');
+  if (!video.paused) {
+    video.pause();
+  } 
+  var wideoDiv = document.querySelector('.wideo');
+  wideoDiv.style.display = 'none';
+}
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="home.js"></script>
     <script src="explore.js"></script>
     <script src="main.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

@@ -66,3 +66,9 @@ function typing(obj){
         xhr.send(JSON.stringify( data ));
     }
     
+    function hide(){
+        let m=document.querySelectorAll(".nav-opt");
+        m.forEach(item=>{
+        item.style.display='none';
+        });
+    }

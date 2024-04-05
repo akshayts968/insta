@@ -40,14 +40,29 @@
                     <ul class="r-2">
                         <li><span><%= user.nPost %></span> Posts</li>
                         <a href="/user/<%=user._id%>/followers"><li><span><%= user.nFollowers %></span> Followers</li></a>
-                        <li><span> <%= user.nFollowing %></span> Following</li>
+                        <a href="/user/<%=user._id%>/followings"><li><span> <%= user.nFollowing %></span> Following</li></a>
                     </ul>
                     <span style="color: white; font-size: 14px;font-weight: 600;letter-spacing: 10px;"><%= user.name %></span>
                 </div>
                 <div id="output" style="width: 100px;height: 100px;"></div>
 
             </header>
-            
+            <div class="add-story-hide">
+                <div class="add-story-link">
+                    <form action="/user/<%=user._id%>/story" method="post">
+                    <input type="text" name="story">
+                    <button>ADD</button>
+                    </form>
+                </div>
+                <button onclick="none(this)">CLose</button>
+            </div>
+            <% if (currUser && currUser._id.equals(user._id)){ %>
+            <div class="add-story-div">
+                <div class="add-story">
+                    <i onclick="addStatus()" class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <%}%>
             <footer>
             <h1>POST</h1>
             <div class="posts">
@@ -64,7 +79,15 @@
     </div>
     <script>
         // Function to fetch relevant data without refreshing the page
-    
+    function addStatus(){
+        var wideoDiv = document.querySelector('.add-story-hide');
+
+       wideoDiv.style.display = 'flex';
+    }
+    function none(obj){
+        var parent = obj.parentNode;
+        parent.style.display = 'none';
+    }
 
 
 
